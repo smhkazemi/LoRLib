@@ -1,1 +1,1 @@
-# LoRLib
+# Library of the LoR
