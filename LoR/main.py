@@ -5,6 +5,7 @@ import random
 import socket
 import threading
 import time
+from web3 import Web3
 
 
 class pseudoTCBRelatedItems:  # simulating the way a user stores an image of the system
@@ -522,6 +523,32 @@ def initialization_phase():
         for line in csvFile:
             user_id = int(line[0])
             pseudoTCBRelatedItems.users[user_id] = Trader(int(line[1]), user_id)
+
+
+def perform_ethereum_transaction(service, units, unit_price, ganache_url, account_1, private_key1, account_2):
+    web3 = Web3(Web3.HTTPProvider(ganache_url))
+
+    # get the nonce.  Prevents one from sending the transaction twice
+    nonce = web3.eth.getTransactionCount(account_1)
+
+    # build a transaction in a dictionary
+    tx = {
+        'nonce': nonce,
+        'to': account_2,
+        'value': web3.toWei(1, 'ether'),
+        str(service) : units,
+        'price': web3.toWei(str(unit_price), 'weight')
+    }
+
+    # sign the transaction
+    signed_tx = web3.eth.account.sign_transaction(tx, private_key1)
+
+    # send transaction
+    tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
+
+    # get transaction hash
+    print(web3.toHex(tx_hash))
+    return web3.toHex(tx_hash)
 
 
 if __name__ == '__main__':
