@@ -516,13 +516,13 @@ def broadcast_message(
         sock.close()
 
 
-def initialization_phase():
-    with open('users.csv', mode='r') as file:
-        # reading users.csv file so that the system starts from a state in which LoR starts working
-        csvFile = csv.reader(file)
-        for line in csvFile:
-            user_id = int(line[0])
-            pseudoTCBRelatedItems.users[user_id] = Trader(int(line[1]), user_id)
+# def initialization_phase():
+#     with open('users_simulation.csv', mode='r') as file:
+#         # reading users_simulation.csv file so that the system starts from a state in which LoR starts working
+#         csvFile = csv.reader(file)
+#         for line in csvFile:
+#             user_id = int(line[0])
+#             pseudoTCBRelatedItems.users[user_id] = Trader(int(line[1]), user_id)
 
 
 def perform_ethereum_transaction(service, units, unit_price, ganache_url, account_1, private_key1, account_2):
@@ -552,7 +552,8 @@ def perform_ethereum_transaction(service, units, unit_price, ganache_url, accoun
 
 
 if __name__ == '__main__':
-    initialization_phase()
+    print("started")
+    # initialization_phase()
 
     # freelancer simulation
     # performance vs CoopEdge
