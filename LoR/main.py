@@ -28,8 +28,10 @@ class SWSE:  # Simulated Workstation Environment - The information coming from t
     coin_list_cpu = []
     coin_list_gpu = []
     coin_list_typing = []
+    switch = False
 
 def get_random_id():
+    if not SWSE.switch: return
     random.seed(int(round(time.time() * 1000)))
     num = int(random.random() * 1000000000)  # calc_sha256(str(int(random.random() * 1000000000)))
     while num in pseudoTCBRelatedItems.ids_in_system.keys():
@@ -37,6 +39,7 @@ def get_random_id():
     return num
 
 def check_if_co_ring_should_terminate(co_ring, to_remove):
+    if not SWSE.switch: return
     flag = False
     for coin in co_ring.trader_coin.binded_on:
         if type(coin) is list:
@@ -53,6 +56,7 @@ class Trader:
         pseudoTCBRelatedItems.user_storage[self.id] = {}
 
     def report_co_ring_status(self):
+        if not SWSE.switch: return
         random.seed(int(round(time.time() * 1000)))
         num = int(random.random() * 1000000000)
         if num > 9500000000:
@@ -60,6 +64,7 @@ class Trader:
         return True
 
     def check_payment(self, user_id, simulated_tcb_history_on_user_ara, simulated_tcb_history_on_payment_amount, coin):
+        if not SWSE.switch: return
         if user_id not in pseudoTCBRelatedItems.id_to_vote.keys():
             pseudoTCBRelatedItems.id_to_vote[user_id] = 0
         if pseudoTCBRelatedItems.users[
@@ -67,6 +72,7 @@ class Trader:
             pseudoTCBRelatedItems.id_to_vote[user_id] = pseudoTCBRelatedItems.id_to_vote[user_id] + 1
 
     def factorial_calc_cpu_job(self):
+        if not SWSE.switch: return
         num = 100
         factorial = 1
         for i in range(num):
@@ -74,10 +80,12 @@ class Trader:
         return factorial
 
     def pay_user(self, user_id, ara, coin):
+        if not SWSE.switch: return
         pseudoTCBRelatedItems.users[user_id].ara_amount = pseudoTCBRelatedItems.users[user_id].ara_amount + ara
         coin.status = 'paid'
 
     def ask_co_ring_members(self, co_ring):
+        if not SWSE.switch: return
         if co_ring.group_id not in pseudoTCBRelatedItems.id_to_vote.keys():
             pseudoTCBRelatedItems.id_to_vote[co_ring.group_id] = 0
         for member in co_ring.trader_coin.binded_on:
@@ -88,6 +96,7 @@ class Trader:
         pseudoTCBRelatedItems.id_to_vote[co_ring.group_id] = pseudoTCBRelatedItems.id_to_vote[co_ring.group_id] + 1
 
     def check_fractal_ring(self, frac_ring_and_id, trader_id):
+        if not SWSE.switch: return
         sum_of_weights = 0
         there_is_a_coin_spent_more_than_once = False
         for table in frac_ring_and_id[0]:
@@ -103,6 +112,7 @@ class Trader:
         return True
 
     def submit_the_fractal_ring(self, frac_ring_and_id, verification_team_ids, trader_id):
+        if not SWSE.switch: return
         if trader_id not in pseudoTCBRelatedItems.fractal_ring_dict.keys():
             pseudoTCBRelatedItems.fractal_ring_dict[trader_id] = []
         pseudoTCBRelatedItems.fractal_ring_dict[frac_ring_and_id[1]] = []
@@ -125,6 +135,7 @@ class Trader:
             pseudoTCBRelatedItems.fractal_ring_dict[frac_ring_and_id[1]][0].remove(ring)
 
     def check_submission_of_fractal_ring(self, f_id, trader_id):
+        if not SWSE.switch: return
         valid_submission = True
         if len(pseudoTCBRelatedItems.fractal_ring_dict[f_id]) != 2:
             valid_submission = False
@@ -160,6 +171,7 @@ def calc_sha256(str):
     return hashlib.sha256(str.encode())
 
 def get_corresponding_dict_for_invest(invest_type):
+    if not SWSE.switch: return
     if 'S' in invest_type:
         return SWSE.coin_dict_storage_invest
     elif 'C' in invest_type:
@@ -172,6 +184,7 @@ def get_corresponding_dict_for_invest(invest_type):
         return None
 
 def get_corresponding_list_for_work(work_type):
+    if not SWSE.switch: return
     if 'S' in work_type:
         return SWSE.coin_list_storage
     elif 'C' in work_type:
@@ -184,10 +197,12 @@ def get_corresponding_list_for_work(work_type):
         return None
 
 def insert_invest_coin(coin_table):
+    if not SWSE.switch: return
     dict_invest = get_corresponding_dict_for_invest(coin_table.type)
     dict_invest[coin_table.coin_id] = coin_table
 
 def broadcast_a_coin(trader, abou, coin_type, nrr):
+    if not SWSE.switch: return
     coin_table = CoinTable(get_random_id(), abou, 'ready', coin_type, None, None, None, trader.id)
     if 'I' in coin_type:
         broadcast_message(
@@ -210,6 +225,7 @@ def broadcast_a_coin(trader, abou, coin_type, nrr):
             print("Invalid type of coin - type: : " + coin_table.type + " owner: " + str(trader.id))
 
 def broadcast_co_op_ring(abou, coin_table, nrr):
+    if not SWSE.switch: return
     co_op_ring_table_instance = create_co_op_ring_table(abou, coin_table, nrr, abou)
     SWSE.co_operation_table_dict[co_op_ring_table_instance.group_id] = co_op_ring_table_instance
     broadcast_message(b'cor ' + bytes((str(co_op_ring_table_instance.group_id) + " " + str(abou) + " " + str(
@@ -226,6 +242,7 @@ def get_random_form_list(l):
     return l[get_random_index_sha256(len(l))]
 
 def create_co_op_ring(coin_table_instance):  # nothing is being submitted here!
+    if not SWSE.switch: return
     coin_table_instance.binded_on = []
     list_to_use = None
     amount_based_on_one_unit = coin_table_instance.amount_based_on_one_unit
@@ -242,6 +259,7 @@ def create_co_op_ring(coin_table_instance):  # nothing is being submitted here!
     return coin_table_instance
 
 def randomized_number_of_cooperation_ring():
+    if not SWSE.switch: return
     cf = 1000
     random.seed(int(round(time.time() * 1000)))
     h = int(random.random() * 1500) + cf
@@ -252,6 +270,7 @@ def randomized_number_of_cooperation_ring():
 
 
 def get_majority_vote(investor_user, frac_ring_and_id, length):
+    if not SWSE.switch: return
     pseudoTCBRelatedItems.user_storage[investor_user.id][frac_ring_and_id[1]]['wait'] = 0
     pseudoTCBRelatedItems.user_storage[investor_user.id][frac_ring_and_id[1]]['ctr'] = 0
     while pseudoTCBRelatedItems.user_storage[investor_user.id][frac_ring_and_id[1]]['wait'] < length: continue
@@ -260,6 +279,7 @@ def get_majority_vote(investor_user, frac_ring_and_id, length):
 
 
 def submit_a_fractal_ring(investor_user, average_number_of_fractal_rings, rand_num_of_co_rings):
+    if not SWSE.switch: return
     # This method would run as a separate thread
     import sys
     import gzip
@@ -295,6 +315,7 @@ def submit_a_fractal_ring(investor_user, average_number_of_fractal_rings, rand_n
     return frac_ring_and_id[1]  # id of the fractal ring
 
 def select_members_of_the_verification_team_for(fractal_ring_and_id):
+    if not SWSE.switch: return
     vt = (int(hashlib.sha256(str(int(round(time.time() * 1000))).encode()).hexdigest(), 32) % len(
         fractal_ring_and_id[0])) + 1000
     result = []
@@ -304,6 +325,7 @@ def select_members_of_the_verification_team_for(fractal_ring_and_id):
     return result
 
 def generate_fractal_ring(average_number_of_fractal_rings, trader, rand_num_of_co_rings):
+    if not SWSE.switch: return
     # The trader keeps its keys
     list_of_trader_co_op_rings_ids = list(pseudoTCBRelatedItems.user_storage[trader.id]['cor'].keys())
     result = prioritizing_the_trader_co_op_rings(average_number_of_fractal_rings, list_of_trader_co_op_rings_ids)
@@ -332,6 +354,7 @@ def generate_fractal_ring(average_number_of_fractal_rings, trader, rand_num_of_c
     return [result, get_random_id()]
 
 def prioritizing_the_trader_co_op_rings(average_number_of_fractal_rings, list_of_trader_co_op_rings_ids):
+    if not SWSE.switch: return
     result = []
     if len(list_of_trader_co_op_rings_ids) != 0:
         for ring_id in list_of_trader_co_op_rings_ids:
@@ -340,6 +363,7 @@ def prioritizing_the_trader_co_op_rings(average_number_of_fractal_rings, list_of
     return result
 
 def set_links_in_fractal_ring(rand_num_of_co_rings, result):
+    if not SWSE.switch: return
     for i in range(1, rand_num_of_co_rings):
         result[i - 1].next_in_fractal_ring = result[i]
         if i > 1:
@@ -385,6 +409,11 @@ class CoOperationTable:
 
 def handle_message(data, current_user_id):
     data = data.decode()
+    if "switch" in data:
+        SWSE.switch = True
+        return
+    if not SWSE.switch:
+        return
     if "c_f_r" in data:
         handle_vt_member_vote(data, current_user_id)
     elif "s_f_r" in data:
@@ -465,6 +494,7 @@ def extract_list_received(data):
 
 
 def receive_coin_broadcast(data):
+    if not SWSE.switch: return
     response = data.split(' ')
     coin_table = CoinTable(int(response[1]), int(response[2]), 'ready', response[3], None, None, None, int(response[4]))
     if 'I' in response[3]:
@@ -476,6 +506,7 @@ def receive_coin_broadcast(data):
 
 
 def handle_vt_member_vote(data, current_user_id):
+    if not SWSE.switch: return
     answer, f_id, user_id = get_details(data)
     if current_user_id != user_id: return
     pseudoTCBRelatedItems.user_storage[user_id][f_id]['wait'] = pseudoTCBRelatedItems.user_storage[user_id][f_id][
@@ -516,6 +547,7 @@ def broadcast_message(
 
 
 def perform_ethereum_transaction(service, units, unit_price, ganache_url, account_1, private_key1, account_2):
+    if SWSE.switch: return
     web3 = Web3(Web3.HTTPProvider(ganache_url))
 
     # get the nonce.  Prevents one from sending the transaction twice

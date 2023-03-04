@@ -4,6 +4,9 @@ import random
 import socket
 import threading
 
+list_of_services = []
+number_of_registered_traders = 0
+threshold_of_switching_from_eth_to_lor = 1500000
 
 class UnitOfServiceWork:
     def __init__(self, uv, ty):
@@ -15,10 +18,6 @@ class Service:
     def __init__(self, ty, muw=1, uv=1):
         self.minimumUnitOfWork = muw
         self.unit_of_service_work = UnitOfServiceWork(uv, ty)
-
-
-list_of_services = []
-number_of_registered_traders = 0
 
 
 def init_services(file_name):
@@ -61,6 +60,9 @@ def handle_message(data, min_value_service):
         amount = get_details(data)
         if amount >= 10 * min_value_service.unit_of_service_work.unit_value:
             broadcast_message(calc_sha256(random.random() * 10000000000))
+            number_of_registered_traders += 1
+            if number_of_registered_traders > threshold_of_switching_from_eth_to_lor:
+                broadcast_message(b'switch')
         else:
             broadcast_message(-1)
 
@@ -73,3 +75,5 @@ def listen_for_new_registration_requests():
     while True:
         data, addr = sock.recvfrom(2048)  # buffer size is 1024 bytes
         threading.Thread(target=handle_message, args=(data,)).start()
+        if number_of_registered_traders >= threshold_of_switching_from_eth_to_lor:
+            break
