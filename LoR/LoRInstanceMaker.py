@@ -61,7 +61,7 @@ def handle_message(data, min_value_service):
         if amount >= 10 * min_value_service.unit_of_service_work.unit_value:
             broadcast_message(calc_sha256(random.random() * 10000000000))
             number_of_registered_traders += 1
-            if number_of_registered_traders > threshold_of_switching_from_eth_to_lor:
+            if number_of_registered_traders >= threshold_of_switching_from_eth_to_lor:
                 broadcast_message(b'switch')
         else:
             broadcast_message(-1)
