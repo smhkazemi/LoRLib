@@ -571,3 +571,15 @@ def perform_ethereum_transaction(service, units, unit_price, ganache_url, accoun
     # get transaction hash
     print(web3.toHex(tx_hash))
     return web3.toHex(tx_hash)
+
+def initialization_phase():
+    with open('users.csv', mode='r') as file:
+        # reading users.csv file so that the system starts from a state in which LoR starts working
+        csvFile = csv.reader(file)
+        for line in csvFile:
+            user_id = int(line[0])
+            pseudoTCBRelatedItems.users[user_id] = Trader(int(line[1]), user_id)
+
+
+if __name__ == '__main__':
+    initialization_phase()
