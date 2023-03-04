@@ -516,15 +516,6 @@ def broadcast_message(
         sock.close()
 
 
-# def initialization_phase():
-#     with open('users_simulation.csv', mode='r') as file:
-#         # reading users_simulation.csv file so that the system starts from a state in which LoR starts working
-#         csvFile = csv.reader(file)
-#         for line in csvFile:
-#             user_id = int(line[0])
-#             pseudoTCBRelatedItems.users[user_id] = Trader(int(line[1]), user_id)
-
-
 def perform_ethereum_transaction(service, units, unit_price, ganache_url, account_1, private_key1, account_2):
     web3 = Web3(Web3.HTTPProvider(ganache_url))
 
@@ -549,12 +540,3 @@ def perform_ethereum_transaction(service, units, unit_price, ganache_url, accoun
     # get transaction hash
     print(web3.toHex(tx_hash))
     return web3.toHex(tx_hash)
-
-
-if __name__ == '__main__':
-    print("started")
-    # initialization_phase()
-
-    # freelancer simulation
-    # performance vs CoopEdge
-    # Recent attacks (security mesuerment)
