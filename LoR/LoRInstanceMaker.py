@@ -6,7 +6,9 @@ import threading
 
 list_of_services = []
 number_of_registered_traders = 0
-threshold_of_switching_from_eth_to_lor = 1500000
+threshold_of_switching_from_eth_to_lor = 1000000
+# threshold_of_switching_from_eth_to_lor = 1250000
+# threshold_of_switching_from_eth_to_lor = 1500000
 
 class UnitOfServiceWork:
     def __init__(self, uv, ty):
