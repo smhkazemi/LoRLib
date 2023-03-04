@@ -492,8 +492,7 @@ def get_details(data):
     return answer, f_id, user_id
 
 
-def listen_to_the_system(current_user_id,
-                         to_receive=""):  # simulating the system of the user - this function is seperated from the user to use multi-threading
+def listen_to_the_system(current_user_id):  # simulating the system of the user - this function is seperated from the user to use multi-threading
     UDP_IP = "255.255.255.255"
     UDP_PORT = 5005
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

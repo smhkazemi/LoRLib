@@ -1,5 +1,5 @@
 from .main import pseudoTCBRelatedItems, SWSE, Trader, get_random_id, check_if_co_ring_should_terminate,\
-    get_corresponding_dict_for_invest, calc_sha256, initialization_phase, broadcast_message,\
+    get_corresponding_dict_for_invest, calc_sha256, broadcast_message,\
     get_corresponding_list_for_work, listen_to_the_system, get_details, handle_vt_member_vote,\
     receive_coin_broadcast, generate_fractal_ring, select_members_of_the_verification_team_for, insert_invest_coin,\
     broadcast_a_coin, broadcast_co_op_ring, create_co_op_ring_table, get_random_index_sha256, get_random_form_list,\
